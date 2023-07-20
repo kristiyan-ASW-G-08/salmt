@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.image-mosaic {
+  display: grid;
+  grid-template:
+    'first first second second second fifth fifth '
+    'first first second second second fifth fifth'
+    'first first second second second sixth sixth'
+    'seventh third second second second sixth sixth'
+    'eight eight forth forth  forth sixth sixth';
+  gap: 5;
+}
+
+.three-image-mosaic {
+  grid-template:
+    'image0 image0 image1'
+    'image0 image0 image2';
+  gap: 5;
+}
+
+.ScrollAreaRoot {
+  overflow: hidden;
+  --scrollbar-size: 10px;
+}
+
+.ScrollAreaViewport {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.ScrollAreaScrollbar {
+  transition: background 160ms ease-out;
+}
+.ScrollAreaScrollbar:hover {
+  background: var(--black-a8);
+}
+.ScrollAreaScrollbar[data-orientation='vertical'] {
+  width: var(--scrollbar-size);
+}
+.ScrollAreaScrollbar[data-orientation='horizontal'] {
+  flex-direction: column;
+  height: var(--scrollbar-size);
+}
+
+.ScrollAreaThumb {
+  flex: 1;
+  background: yellow;
+  border-radius: dark-ty;
+  position: relative;
+}
+/* increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html */
+.ScrollAreaThumb::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.ScrollAreaCorner {
+  background: var(--black-a8);
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
+.mapMainContainer {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  width: 80%;
+  margin: auto;
+}
+
+.buttonWrapper {
+  display: flex;
+  padding-bottom: 10px;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.backButton {
+  height: 40px;
+  font-size: 14px;
+}
