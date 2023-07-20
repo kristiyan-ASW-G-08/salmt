@@ -32,10 +32,10 @@ const roboto_mono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Harirsaloonh',
+  title: 'AcmeHair',
   description: '',
   keywords: [],
-  applicationName: 'Hairdresser',
+  applicationName: 'AcmeHair',
 };
 
 interface RootLayoutProps {

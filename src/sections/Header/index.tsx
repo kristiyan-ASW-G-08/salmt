@@ -21,16 +21,8 @@ import NavLink from '@/components/NavLink';
 
 const navLinks = [
   {
-    href: '/templates',
-    label: 'Templates',
-  },
-  {
-    href: '/guides',
-    label: 'Guides',
-  },
-  {
-    href: '/examples',
-    label: 'Examples',
+    href: '/salons?page=1',
+    label: 'Salons',
   },
 ];
 const isActive = (pathname: string, href: string) => pathname.startsWith(href);
@@ -88,11 +80,6 @@ export const Header = () => {
                       Log Out
                     </Button>
                   </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Button variant="primary" size="sm">
-                      <Link href={'/builder'}>My Resume</Link>
-                    </Button>
-                  </NavigationMenuItem>
                 </>
               ) : (
                 <>
@@ -132,11 +119,6 @@ export const Header = () => {
                   <NavigationMenuItem>
                     <Button onClick={signOut} size="sm" variant="link">
                       Log Out
-                    </Button>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Button variant="primary" size="sm">
-                      <Link href={'/builder'}>My Resume</Link>
                     </Button>
                   </NavigationMenuItem>
                 </>

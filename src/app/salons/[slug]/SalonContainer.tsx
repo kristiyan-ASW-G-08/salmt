@@ -82,7 +82,10 @@ const SalonContainer: FC<SalonContainerProps> = ({
           />
         </div>
         <div className=" h-[60vh] w-full gap-md hidden lg:grid three-image-mosaic">
-          {(salon.gallery as string[]).map((src, index) => (
+          {[
+            salon?.thumbnail as string,
+            ...(salon.gallery as string[]).filter((_, index) => index !== 0),
+          ].map((src, index) => (
             <ImageGridItem
               key={src}
               src={src}
