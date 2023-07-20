@@ -67,8 +67,11 @@ const VARIANT_MAP: Record<Variant, string> = {
     ' hover:bg-light-typography-primary hover:bg-opacity-[5%] ',
   ),
   info: 'bg-brand-info text-brand-light hover:bg-brand-light hover:text-brand-info',
-  success:
-    'bg-brand-success text-brand-light hover:bg-brand-light hover:text-brand-success',
+  success: clsx(
+    'text-utility-success   border border-utility-success ',
+    ' dark:hover:bg-dark-typography-primary dark:hover:bg-opacity-[20%] ',
+    ' hover:bg-light-typography-primary hover:bg-opacity-[5%] ',
+  ),
   warning:
     'bg-brand-warning text-brand-light hover:bg-brand-light hover:text-brand-warning',
 };

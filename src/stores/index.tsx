@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { TimeSlot } from '@/classes/Schedualer';
+import { TimeSlot } from '@/utils/schedualing';
 const useTimeSlotStore = create<{
   schedule: TimeSlot[];
   newTimeSlot: TimeSlot | null;

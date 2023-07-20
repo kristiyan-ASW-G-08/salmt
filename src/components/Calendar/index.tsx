@@ -3,7 +3,7 @@ import React, { FC, useRef, useState } from 'react';
 import { format, isValid, set } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { hasOverlappingTimeSlots } from '@/classes/Schedualer';
+import { hasOverlappingTimeSlots } from '@/utils/schedualing';
 import useTimeSlotStore from '@/stores';
 import Button from '../Button';
 import { useSupabase } from '@/supabase/SupabaseProvider';
@@ -42,7 +42,7 @@ const Calendar: FC<CalendarProps> = ({
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(e.target.validity.valid)
+    console.log(e.target.validity.valid);
     setIsTimeValid(e.target.validity.valid);
     setAppointmentTime(value);
   };
@@ -93,6 +93,13 @@ const Calendar: FC<CalendarProps> = ({
           <Button
             variant="primary"
             onClick={() => {
+              if (
+                session === null ||
+                session?.user === null ||
+                session?.user?.id === null
+              )
+                return router.push('/auth');
+
               const newAppointment = {
                 duration: service.duration,
                 start_time: appointmentTime,

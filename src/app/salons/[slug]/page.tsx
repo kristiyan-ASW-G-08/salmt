@@ -13,31 +13,7 @@ import { notFound } from 'next/navigation';
 import Button from '@/components/Button';
 import Link from 'next/link';
 
-type Props = {
-  params: { slug: string };
-};
 
-export const generateMetadata = async (
-  { params }: Props,
-  parent?: ResolvingMetadata,
-): Promise<Metadata> => {
-  // read route params
-  const id = params.slug;
-  const supabase = createServerClient();
-  const { data, error } = await supabase
-    .from('salons')
-    .select()
-    .eq('id', id)
-    .single();
-  if (error) {
-    return {};
-  }
-  const { name, description } = data as Salon;
-  return {
-    title: name,
-    description,
-  };
-};
 
 const SalonPage = async ({
   params: { slug },

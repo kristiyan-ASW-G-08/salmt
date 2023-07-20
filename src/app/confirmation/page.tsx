@@ -7,13 +7,15 @@ import Image from 'next/image';
 import Button from '@/components/Button';
 import { useSupabase } from '@/supabase/SupabaseProvider';
 import { useRouter } from 'next/navigation';
-export const getHumanReadableDate = (dateString: string) => {
+import { useToastStore } from '@/components/Toast';
+const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const month = date.toLocaleString('default', { month: 'long' });
 
   return `${month} ${date.getFullYear()}`;
 };
 const ConfirmationPage = () => {
+  const { setOpen } = useToastStore();
   const { schedule, salon, employee, newTimeSlot, selectedDate, reset } =
     useTimeSlotStore();
   console.log(schedule, salon, employee);
@@ -61,7 +63,7 @@ const ConfirmationPage = () => {
                 </p>
                 <p className=" text-light-typography-contrast text-md">
                   Scheduled for {newTimeSlot?.start_time}{' '}
-                  {getHumanReadableDate(selectedDate)}
+                  {formatDate(selectedDate)}
                 </p>
                 <p className=" text-light-typography-contrast text-md">
                   Duration : ~{newTimeSlot?.duration}minutes
@@ -83,6 +85,7 @@ const ConfirmationPage = () => {
                     console.log(error);
                   } else {
                     router.replace('/');
+                    setOpen(true);
                   }
                 }}
               >
