@@ -11,7 +11,7 @@ interface CardProps {
 const Card: FC<CardProps> = ({ thumbnail, title, subtitle }) => (
   <article className="grid border-2 dark:border-dark-background-contrast border-light-background-contrast shadow-md rounded-md  hover:scale-105 transition duration-150 ease-in-out">
     <div className="relative w-full h-48 ">
-      <Image src={thumbnail} alt={''} fill className="rounded-md" />
+      <Image src={thumbnail} alt={''} fill />
     </div>
     <div className="grid gap-1 p-sm">
       <h1 className="font-sans text-lg font-semibold text-light-typography-primary">

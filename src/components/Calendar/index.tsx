@@ -107,23 +107,23 @@ const Calendar: FC<CalendarProps> = ({
                 service,
               };
               if (selectedDate === null) return;
-              if (schedule[selectedDate.toString()]) {
-                setIsOverlapping(
-                  hasOverlappingTimeSlots(
-                    newAppointment,
-                    schedule[selectedDate.toString()],
-                  ),
-                );
+              if (
+                schedule[selectedDate.toString()] &&
+                hasOverlappingTimeSlots(
+                  newAppointment,
+                  schedule[selectedDate.toString()],
+                )
+              ) {
+                setIsOverlapping(true);
+                return;
               }
-
-              if (isOverlapping) return;
-
-              const oldSchedule = schedule[selectedDate.toString()] || [];
               const newSchedule = {
                 ...schedule,
-                [selectedDate.toString()]: [...oldSchedule, newAppointment],
+                [selectedDate.toString()]: [
+                  ...(schedule[selectedDate.toString()] || []),
+                  newAppointment,
+                ],
               };
-
               setSchedule({
                 schedule: newSchedule,
                 employee,
@@ -143,6 +143,7 @@ const Calendar: FC<CalendarProps> = ({
             {weekDay?.closing_time}
           </p>
         )}
+
         {isOverlapping && (
           <p className="text-utility-error   border border-utility-error p-sm font-bold text-center">
             There is an overlapping appointment.

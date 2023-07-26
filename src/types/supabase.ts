@@ -13,6 +13,7 @@ export interface Database {
         Row: {
           content: string | null
           created_at: string | null
+          display_name: string | null
           id: number
           rating: number | null
           salon_id: number | null
@@ -21,6 +22,7 @@ export interface Database {
         Insert: {
           content?: string | null
           created_at?: string | null
+          display_name?: string | null
           id?: number
           rating?: number | null
           salon_id?: number | null
@@ -29,6 +31,7 @@ export interface Database {
         Update: {
           content?: string | null
           created_at?: string | null
+          display_name?: string | null
           id?: number
           rating?: number | null
           salon_id?: number | null

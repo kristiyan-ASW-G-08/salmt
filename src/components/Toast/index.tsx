@@ -22,7 +22,11 @@ const AppointmentToast = () => {
     <Toast.Provider swipeDirection="right">
       <Toast.Root className="ToastRoot" open={open} onOpenChange={setOpen}>
         <Toast.Title>
-          <Button variant="success" size="sm">
+          <Button
+            variant="success"
+            size="sm"
+            className="bg-light-background-primary"
+          >
             Your Appointment has Been Scheduled
           </Button>
         </Toast.Title>

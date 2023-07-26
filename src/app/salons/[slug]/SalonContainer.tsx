@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 import { ImageGridItem } from '@/components/ImageMosaic';
 import { useRouter } from 'next/navigation';
+import * as Toast from '@radix-ui/react-toast';
 import {
   TwitterLogoIcon,
   InstagramLogoIcon,
@@ -15,6 +16,7 @@ import {
 import Link from 'next/link';
 import ServiceCard from '@/components/ServiceCard';
 import { Employee } from '@/types/Employee';
+import { Comment } from '@/types/Comment';
 import Card from '@/components/Card';
 import dynamic from 'next/dynamic';
 import { Dialog, DialogPortal } from '@/components/Dialog';
@@ -25,24 +27,36 @@ import Calendar from '@/components/Calendar';
 import * as Accordion from '@radix-ui/react-accordion';
 import EmployeeDialogCard from '@/components/EmployeeDialogCard';
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline';
+import Button from '@/components/Button';
+import StarRating from '@/components/StarRating';
+import ReviewForm from '@/components/ReviewForm';
+import Review from '@/components/Review';
+import { set } from 'date-fns';
 interface SalonContainerProps {
   salon: Salon;
   slug: string;
   employees: Employee[];
+  reviews: Comment[];
 }
+type DialogMessageKey = 'unauthenticated-user' | 'already-reviewed';
+const dialogMessage: Record<DialogMessageKey, string> = {
+  'unauthenticated-user': 'You must be logged in to leave a review!',
+  'already-reviewed': 'You have already reviewed this salon!',
+};
 const SalonContainer: FC<SalonContainerProps> = ({
   salon,
   slug,
   employees,
+  reviews,
 }) => {
+  const [showCommentForm, setShowCommentForm] = useState(false);
   console.log(salon, employees);
-
   const router = useRouter();
-  const { session } = useSupabase();
-  const getEmployeesThatCanDoService = (service: string) =>
-    Object.entries(employees as any).filter(([key, value]: [string, any]) => {
-      return value.services.includes(service);
-    });
+  const { session, supabase } = useSupabase();
+  const [open, setOpen] = useState(false);
+  const [dialogMessageKey, setDialogMessageKey] = useState<DialogMessageKey>(
+    'unauthenticated-user',
+  );
   return (
     <>
       <section className="grid w-screen gap-md  bg-light-background-primary dark:bg-dark-background-primary p-md lg:px-lg mt-[10vh]">
@@ -231,12 +245,7 @@ const SalonContainer: FC<SalonContainerProps> = ({
             {salon.team_description}
           </h2>
         </div>
-        <div
-          className="grid gap-md "
-          style={{
-            gridTemplateColumns: 'repeat(auto-fill, minmax(250px,1fr)',
-          }}
-        >
+        <div className="grid gap-sm grid-flow-col  auto-cols-[100%] md:grid-flow-row overflow-y-scroll md:overflow-hidden md:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
           {employees.map(
             ({ first_name, last_name, position, id, thumbnail }) => (
               <Card
@@ -247,6 +256,77 @@ const SalonContainer: FC<SalonContainerProps> = ({
               />
             ),
           )}
+        </div>
+      </section>
+      <section className="grid w-screen gap-md  bg-light-background-primary dark:bg-dark-background-primary p-md  lg:px-lg">
+        <div className="grid gap-sm md:grid-flow-col justify-between">
+          {' '}
+          <div className="grid gap-2">
+            <h1 className="font-bold font-sans text-2xl md:text-3xl dark:text-dark-typography-primary text-light-typography-primary text-start">
+              Reviews
+            </h1>
+            <h2 className="font-semibold text-md dark:text-dark-typography-contrast text-light-typography-contrast text-left">
+              {salon.team_description}
+            </h2>
+          </div>
+          <Toast.Provider swipeDirection="right">
+            <Toast.Root
+              className="ToastRoot"
+              open={open}
+              onOpenChange={setOpen}
+            >
+              <Toast.Title>
+                <Button
+                  variant="error"
+                  size="sm"
+                  className="bg-light-background-primary"
+                >
+                  {dialogMessage[dialogMessageKey]}
+                </Button>
+              </Toast.Title>
+            </Toast.Root>
+            <Toast.Viewport className="ToastViewport" />
+          </Toast.Provider>
+          <Button
+            variant="outlined"
+            size="sm"
+            className="self-center"
+            onClick={() => {
+              const hasUserReviewed = reviews.some(
+                review => review.user_id === session?.user?.id,
+              );
+              if (!session) {
+                setDialogMessageKey('unauthenticated-user');
+                setOpen(true);
+                return;
+              }
+              if (hasUserReviewed) {
+                setDialogMessageKey('already-reviewed');
+                setOpen(true);
+                return;
+              }
+              setShowCommentForm(!showCommentForm);
+            }}
+          >
+            {showCommentForm ? 'Close' : 'New Comment'}
+          </Button>
+        </div>
+        {showCommentForm && (
+          <ReviewForm
+            salonId={salon.id}
+            closeForm={() => setShowCommentForm(false)}
+          />
+        )}
+
+        <div
+          className="grid gap-md "
+          style={{
+            gridTemplateColumns: 'repeat(auto-fill, minmax(250px,1fr)',
+          }}
+        >
+          {reviews.map(review => (
+            <Review key={review.id} review={review} />
+          ))}
         </div>
       </section>
       <section className="grid w-screen gap-md  bg-light-background-primary dark:bg-dark-background-primary p-md lg:px-lg">

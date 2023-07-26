@@ -21,6 +21,7 @@ const ConfirmationPage = () => {
   console.log(schedule, salon, employee);
   const router = useRouter();
   const { supabase, session } = useSupabase();
+  console.log(newTimeSlot);
   return (
     <div className="grid  h-screen w-screen mt-[10vh]">
       <section className="grid w-screen gap-sm  bg-light-background-primary dark:bg-dark-background-primary p-md lg:px-lg h-[30vh] bg-red-500] ">
@@ -66,7 +67,7 @@ const ConfirmationPage = () => {
                   {formatDate(selectedDate)}
                 </p>
                 <p className=" text-light-typography-contrast text-md">
-                  Duration : ~{newTimeSlot?.duration}minutes
+                  Duration : ~{newTimeSlot?.duration} minutes
                 </p>
               </div>
             </div>
