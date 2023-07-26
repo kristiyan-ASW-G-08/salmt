@@ -30,7 +30,14 @@ const Container: FC = () => {
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="w-full grid place-content-center">
+        <div className="text-4xl text-light-typography-contrast">
+          Loading...
+        </div>
+      </div>
+    );
   if (error) {
     console.log(error);
     return <div>Error</div>;
